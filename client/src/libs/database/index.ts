@@ -5,7 +5,10 @@ type NullOrMongoose = typeof mongoose | null;
 interface CacheConnection {
   client: NullOrMongoose;
 }
-const MONGO_URI = process.env["MONGODB_URI_DEV"];
+const MONGO_URI =
+  process.env.NODE_ENV === "development"
+    ? process.env.MONGODB_URI_DEV
+    : process.env.MONGODB_URI;
 if (!MONGO_URI) {
   console.log(MONGO_URI, " mongo uri ");
   throw new Error(
