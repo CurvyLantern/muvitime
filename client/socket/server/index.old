@@ -1,6 +1,6 @@
 import { connectToDatabase } from "@/libs/database";
 import Room from "@/libs/database/room/model";
-import type { SocketServer } from "@/pages/api/socket";
+import type { SocketServer } from "@/pages/api/socket/index";
 import { socketPath } from "@/utils/Constants";
 import { socketEvents } from "@/utils/SocketHelpers";
 import type {
@@ -23,7 +23,7 @@ export const config = {
 interface SocketWithUserId extends ISocket {
   userId?: string;
 }
-export const getSocket = (server: SocketServer, opts?: IOServerOptions) => {
+const getSocket = (server: SocketServer, opts?: IOServerOptions) => {
   // if (cachedSocketServer.io) return cachedSocketServer.io;
   const myOpts = Object.assign(
     {
@@ -110,9 +110,9 @@ export const getSocket = (server: SocketServer, opts?: IOServerOptions) => {
     console.log("I am connected and working", socket.handshake.auth.userId);
 
     socket.on("logging-out", ({ roomId }) => {
-      socket
-        .to(roomId)
-        .emit(socketEvents.friendLogout, { who: socket.handshake.auth.userId });
+      socket.to(roomId).emit(socketEvents.friendLogout, {
+        who: socket.handshake.auth.userId,
+      });
       console.log("logging out ", socket.handshake.auth.userId);
     });
 
@@ -177,3 +177,5 @@ export const getSocket = (server: SocketServer, opts?: IOServerOptions) => {
 
   return io;
 };
+
+export {};
