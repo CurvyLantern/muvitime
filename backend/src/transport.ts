@@ -20,10 +20,12 @@ function transportInit(httpServer: Server) {
     transports: ["websocket"],
   });
 
-  instrument(peers, {
-    auth: false,
-    mode: "development",
-  });
+  if (process.env.NODE_ENV === "development") {
+    instrument(peers, {
+      auth: false,
+      mode: "development",
+    });
+  }
 
   peers.use((socket: SocketWithUserId, next) => {
     const userId = socket.handshake.auth.userId;

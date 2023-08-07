@@ -1,8 +1,13 @@
-import "dotenv/config.js";
+import { config } from "dotenv";
 
 import { createServer } from "http";
 import app from "./app.js";
 import mongoose from "mongoose";
+import transportInit from "./transport.js";
+
+if (process.env.NODE_ENV !== "production") {
+  config();
+}
 
 const MONGO_URI =
   process.env.NODE_ENV === "development"
@@ -13,8 +18,6 @@ if (!MONGO_URI) {
     "Please define the Mongo uri environment variable inside .env.local"
   );
 }
-
-import transportInit from "./transport.js";
 
 const port = Number(process.env.PORT || 8000);
 
