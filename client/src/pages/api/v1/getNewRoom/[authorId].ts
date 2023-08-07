@@ -17,10 +17,13 @@ export default async function handler(
   if (req.method === "GET") {
     const authorId = req.query.authorId as string;
 
+    console.log({ authorId });
+
     await connectToDatabase();
     const { roomId } = await createRoom({
       userId: authorId,
     });
+    // const roomId = "123123";
     return res.status(200).json({ roomId });
   }
 
