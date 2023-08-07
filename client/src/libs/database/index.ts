@@ -9,8 +9,8 @@ const MONGO_URI =
   process.env.NODE_ENV === "development"
     ? process.env.MONGODB_URI_DEV
     : process.env.MONGODB_URI;
+console.log(MONGO_URI, " mongo uri ");
 if (!MONGO_URI) {
-  console.log(MONGO_URI, " mongo uri ");
   throw new Error(
     "Please define the Mongo uri environment variable inside .env.local"
   );
@@ -28,11 +28,12 @@ interface ICacheConnection {
 declare global {
   var mongooseCache: ICacheConnection;
 }
-global.mongooseCache = {
-  conn: null,
-  promise: null,
-};
-const cacheConnection: ICacheConnection = global.mongooseCache;
+
+let cacheConnection: ICacheConnection = global.mongooseCache;
+
+if (!cacheConnection) {
+  cacheConnection = global.mongooseCache = { conn: null, promise: null };
+}
 
 export const connectToDatabase = async () => {
   if (cacheConnection.conn) return cacheConnection.conn;
@@ -47,11 +48,13 @@ export const connectToDatabase = async () => {
 
   try {
     cacheConnection.conn = await cacheConnection.promise;
-    return cacheConnection.conn;
   } catch (e) {
     cacheConnection.promise = null;
     throw e;
   }
+
+  return cacheConnection.conn;
+
   // return await mongoose
   //   .connect(MONGO_URI, {
   //     bufferCommands: false,

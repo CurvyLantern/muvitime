@@ -9,6 +9,7 @@ export default async function handler(
     const testClient = await connectToDatabase();
     return res.status(200).json({ hello: "mom" });
   } catch (error) {
+    console.log(error);
     return res.status(404).json({ hi: "hello" });
   }
 }
