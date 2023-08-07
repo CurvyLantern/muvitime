@@ -1,0 +1,14 @@
+{
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "events": {
+    "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"
+  },
+  "execMap": {},
+  "ext": "js,ts,json",
+  "ignore": [".git", "node_modules"],
+  "restartable": "rs",
+  "verbose": true,
+  "watch": ["src"]
+}

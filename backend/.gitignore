@@ -1,0 +1,13 @@
+.git
+
+node_modules
+.yarn
+.yarn/*
+pnp.*
+.pnp/*
+.pnp.*
+dist
+build
+*.env.*
+
+pnpm-lock.yaml
