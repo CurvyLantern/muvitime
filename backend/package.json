@@ -31,6 +31,7 @@
   "name": "backend",
   "scripts": {
     "build": "tsc",
+    "prod:build": "CI=false tsc",
     "serve": "nodemon --exec pnpm start",
     "start": "tsc && node dist/main.js",
     "preview": "node dist/main.js",
