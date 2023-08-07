@@ -1,9 +1,9 @@
-import { config } from "dotenv";
-
 import { createServer } from "http";
+
 import app from "./app.js";
 import mongoose from "mongoose";
 import transportInit from "./transport.js";
+import { config } from "dotenv";
 
 if (process.env.NODE_ENV !== "production") {
   config();
