@@ -7,6 +7,7 @@ interface CacheConnection {
 }
 const MONGO_URI = process.env["MONGODB_URI_DEV"];
 if (!MONGO_URI) {
+  console.log(MONGO_URI, " mongo uri ");
   throw new Error(
     "Please define the Mongo uri environment variable inside .env.local"
   );
