@@ -25,15 +25,19 @@ const httpServer = createServer(app);
 
 transportInit(httpServer);
 
-mongoose.set("autoIndex", false);
-mongoose.set("strictQuery", false);
+const main = () => {
+  mongoose.set("autoIndex", false);
+  mongoose.set("strictQuery", false);
 
-mongoose
-  .connect(MONGO_URI, {})
-  .then(() => {
-    console.log("connected to MongoDB");
-    httpServer.listen(port, () => console.log(`server listening on ${port}`));
-  })
-  .catch((error) => {
-    console.log(error);
-  });
+  mongoose
+    .connect(MONGO_URI, {})
+    .then(() => {
+      console.log("connected to MongoDB");
+      httpServer.listen(port, () => console.log(`server listening on ${port}`));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+main();
