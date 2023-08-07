@@ -3,7 +3,6 @@ import { Server as SocketServer } from "socket.io";
 import type { Socket as ISocket } from "socket.io";
 import type { Server } from "http";
 import { socketEvents } from "./utils.js";
-import { connectToDatabase } from "./libs/db/index.js";
 import Room from "./libs/db/room/model.js";
 
 interface SocketWithUserId extends ISocket {
@@ -111,7 +110,7 @@ function transportInit(httpServer: Server) {
 
     // ask for permission
     socket.on(socketEvents.askPermission, async ({ roomId }) => {
-      await connectToDatabase();
+      console.log(socket.id, " has asked for permission");
       const user = await Room.findOne({
         roomId,
       })

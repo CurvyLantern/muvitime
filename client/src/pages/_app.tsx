@@ -23,14 +23,11 @@ export default function App({ Component, pageProps }: AppProps) {
   }, [userId, setUserId]);
 
   useEffect(() => {
-    if (userId && socket) {
-      (socket.auth as { userId: string }).userId = userId;
-      if (socket.connected) {
-        socket.disconnect();
-      } else {
-        socket.connect();
-      }
-    }
+    if (!socket) return;
+
+    socket.disconnect();
+    (socket.auth as { userId: string }).userId = userId;
+    socket.connect();
   }, [userId, socket]);
 
   return (

@@ -1,9 +1,8 @@
 import { useBoundStore } from "@/store";
 import { socketPath } from "@/utils/Constants";
-import { useState, useEffect } from "react";
-import { useStartTyping } from "react-use";
-import io from "socket.io-client";
+import { useEffect, useState } from "react";
 import type { Socket } from "socket.io-client";
+import io from "socket.io-client";
 
 export const useSocketClient = () => {
   const userId = useBoundStore((s) => s.userId);
@@ -31,6 +30,10 @@ export const useSocketClient = () => {
       console.log(`connect_error due to ${err.message}`);
     });
     setLocalSocket(sock);
+
+    return () => {
+      sock?.disconnect();
+    };
   }, []);
 
   useEffect(() => {

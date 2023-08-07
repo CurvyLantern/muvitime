@@ -1,10 +1,10 @@
-import mongoose, { Model } from "mongoose";
+import mongoose from "mongoose";
 const RoomSchema = new mongoose.Schema({
   roomId: String,
   authorId: String,
   members: [String],
 });
 
-const Room = mongoose.models.Room || mongoose.model("Room", RoomSchema);
+const Room = mongoose.model("Room", RoomSchema);
 
 export default Room;

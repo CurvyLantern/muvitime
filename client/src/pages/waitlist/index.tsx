@@ -53,10 +53,9 @@ const WaitRoom = () => {
   }, []);
 
   useEffect(() => {
-    if (!router || !params) return () => {};
-
-    console.log(socket);
-    if (!socket || socket.disconnected) return;
+    if (socket?.disconnected) {
+      socket?.connect();
+    }
     console.log("everything is working as expected");
     const handlePermissionGranted = () => {
       console.log("got permission to enter meeting");
@@ -68,12 +67,12 @@ const WaitRoom = () => {
     const handlePermissionRejected = () => {
       console.log("permission not given to me");
     };
-    socket.on(socketEvents.permissionGranted, handlePermissionGranted);
-    socket.on(socketEvents.permissionRejected, handlePermissionRejected);
+    socket?.on(socketEvents.permissionGranted, handlePermissionGranted);
+    socket?.on(socketEvents.permissionRejected, handlePermissionRejected);
 
     return () => {
-      socket.off(socketEvents.permissionGranted, handlePermissionGranted);
-      socket.off(socketEvents.permissionRejected, handlePermissionRejected);
+      socket?.off(socketEvents.permissionGranted, handlePermissionGranted);
+      socket?.off(socketEvents.permissionRejected, handlePermissionRejected);
     };
   }, [socket, params, router]);
 

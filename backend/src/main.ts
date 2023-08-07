@@ -1,11 +1,19 @@
 import "dotenv/config.js";
-import { Server as SocketServer } from "socket.io";
-import { instrument } from "@socket.io/admin-ui";
 
 import { createServer } from "http";
 import app from "./app.js";
-import { connectToDatabase } from "./libs/db/index.js";
-import Room from "./libs/db/room/model.js";
+import mongoose from "mongoose";
+
+const MONGO_URI =
+  process.env.NODE_ENV === "development"
+    ? process.env.MONGODB_URI_DEV
+    : process.env.MONGODB_URI;
+console.log({ MONGO_URI });
+if (!MONGO_URI) {
+  throw new Error(
+    "Please define the Mongo uri environment variable inside .env.local"
+  );
+}
 
 import transportInit from "./transport.js";
 
@@ -15,4 +23,15 @@ const httpServer = createServer(app);
 
 transportInit(httpServer);
 
-httpServer.listen(port, () => console.log(`server listening on ${port}`));
+mongoose.set("autoIndex", false);
+mongoose.set("strictQuery", false);
+
+mongoose
+  .connect(MONGO_URI, {})
+  .then(() => {
+    console.log("connected to MongoDB");
+    httpServer.listen(port, () => console.log(`server listening on ${port}`));
+  })
+  .catch((error) => {
+    console.log(error);
+  });
