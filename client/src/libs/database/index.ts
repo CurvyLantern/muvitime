@@ -28,11 +28,11 @@ interface ICacheConnection {
 declare global {
   var mongooseCache: ICacheConnection;
 }
-
-const cacheConnection: ICacheConnection = (global.mongooseCache = {
+global.mongooseCache = {
   conn: null,
   promise: null,
-});
+};
+const cacheConnection: ICacheConnection = global.mongooseCache;
 
 export const connectToDatabase = async () => {
   if (cacheConnection.conn) return cacheConnection.conn;
@@ -46,7 +46,8 @@ export const connectToDatabase = async () => {
   }
 
   try {
-    return (cacheConnection.conn = await cacheConnection.promise);
+    cacheConnection.conn = await cacheConnection.promise;
+    return cacheConnection.conn;
   } catch (e) {
     cacheConnection.promise = null;
     throw e;
